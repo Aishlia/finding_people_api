@@ -383,7 +383,7 @@ async function find_best_lead(companies_test) {
         return highest_lead;
       } catch (err) {
         return {
-          "email": 'None'
+          "email": 'lists broke'
         }
       }
     }
