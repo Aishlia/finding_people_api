@@ -278,7 +278,8 @@ const puppeteer = require("puppeteer");
 
 async function find_best_lead(companies_test) {
   const browser = await puppeteer.launch({
-    // headless: false
+    // headless: false,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   for (i = 0; i < companies_test.length; i++) {

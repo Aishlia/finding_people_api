@@ -6,13 +6,14 @@ const cookie = {
 
 const puppeteer = require('puppeteer');
 const request = require('request');
-// 
+//
 
 // getting company get_info
 async function get_info(companyId) {
   const linkedin_url = "https://www.linkedin.com/sales/accounts/insights?companyId=" + companyId;
   const browser = await puppeteer.launch({
-    // headless: falsew
+    // headless: false, 
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
