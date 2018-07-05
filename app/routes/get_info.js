@@ -6,6 +6,7 @@ const cookie = {
 
 const puppeteer = require('puppeteer');
 const request = require('request');
+// 
 
 // getting company get_info
 async function get_info(companyId) {
