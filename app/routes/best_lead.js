@@ -351,7 +351,7 @@ async function find_best_lead(companies_test) {
       }
     });
 
-    function lists(potential_leads) {
+    function best_lead(potential_leads) {
       leadsWithCoolPoints = []
       try {
         for (let pL of potential_leads) {
@@ -371,7 +371,6 @@ async function find_best_lead(companies_test) {
         if (leadsWithCoolPoints.length == 0) {
           console.log("No One Was Cool Enough");
         } else if (leadsWithCoolPoints.length > 0) {
-
           for (human of leadsWithCoolPoints) {
             if (human['cool'] > highest_lead_score) {
               highest_lead_score = human['cool'];
@@ -396,7 +395,7 @@ async function find_best_lead(companies_test) {
       });
     }
 
-    async function push_best_email_file(company_leads) {
+    async function best_info(company_leads) {
       if (company_leads != '') {
         name = "name=" + company_leads['name'];
         company_url = "&url=" + company_leads['company_website'];
@@ -414,7 +413,7 @@ async function find_best_lead(companies_test) {
       return company_leads;
     }
 
-    return push_best_email_file(lists(leads))
+    return best_lead_info(best_lead(leads))
 
     await page.close();
   }

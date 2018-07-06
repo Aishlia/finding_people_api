@@ -6,13 +6,13 @@ const cookie = {
 
 const puppeteer = require('puppeteer');
 const request = require('request');
-//
+//''
 
 // getting company get_info
 async function get_info(companyId) {
   const linkedin_url = "https://www.linkedin.com/sales/accounts/insights?companyId=" + companyId;
   const browser = await puppeteer.launch({
-    // headless: false, 
+    // headless: false,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
