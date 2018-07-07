@@ -4,9 +4,14 @@ var repeat_medium = 0;
 const fs = require('fs');
 const request = require('request');
 const rp = require('request-promise');
+/*
+Two systems of filtering. One Goes off Indian Caste System. Those who are lower
+are not desirable and will therefore be subtracted cool points. Those who are
+higher will be given cool points.
+*/
 
-//Goes off Indian Caste System, If you don't know it, pick up a fucking book
-const untouchable = [
+// Untouchables: -5 cool points
+const dalits = [
   "affairs",
   "tax",
   "finance",
@@ -43,21 +48,23 @@ const untouchable = [
   "retired"
 ];
 
-// Slighty Touchable - You still shouldn't touch them though
-const sudra = ["app"];
+// Commoners and peasants: -2 cool points
+const sudras = ["app"];
 
-// Desireables get a +2 Boost
-const kshatriyas = ["engineering", "electronics", "product", "development"];
+// Merchants and landowners: +2 cool points
+const vaishya = ["engineering", "electronics", "product", "development"];
+
+// Warriors and kings: +x cool points
+const kshatryia = ["vice", "v.p.", "vp", "senior", "sr."];
+
+// Priests and academics: +x cool points
+const bhramin = ["cto", "ceo", "founder", "owner", "president", "director"];
 
 // StopGap Words Found in Title - Adding to This List will Remove the Word From Titles
 const stopgap_words = ["of", "and", "for", "at", "to", "the"];
 
-// hierarchy of fish
-const big_fish = ["cto", "ceo", "founder", "owner", "president", "director"];
-
-const medium_fish = ["vice", "v.p.", "vp", "senior", "sr."];
-// const medium_fish = [];
-
+// The brahmans are harder to contact in larger companies so scores must be adjusted
+// based on company size
 const custom_scores = [{
     position: "cto",
     less_than_50: 8,
@@ -150,19 +157,6 @@ const custom_scores = [{
   }
 ];
 
-// {
-//     "id": 607,
-//     "name": "Ankit",
-//     "linkedin_url": "https://www.linkedin.com/sales/accounts/insights?companyId=833287",
-//     "website": "http://www.shopankit.com",
-//     "geography": "West Palm Beach, Florida Area",
-//     "industry": "Consumer Goods",
-//     "company_headcount": "",
-//     "employees_on_linkedin": "91 employees on LinkedIn",
-//     "companyId": "833287"
-// }
-
-
 // Checks Whether a Value is in a Given Array and Returns True or False
 const is_in_array = function(s, your_array) {
   for (var i = 0; i < your_array.length; i++) {
@@ -202,10 +196,9 @@ function clean_position_array(position) {
   repeat_medium = 0;
 
   for (var i = 0; i < diff.length; i++) {
-    if ((is_in_array(diff[i], big_fish))) {
-      // console.log(diff[i])
+    if ((is_in_array(diff[i], bhramin))) {
       repeat_big += 1;
-    } else if (is_in_array(diff[i], medium_fish)) {
+    } else if (is_in_array(diff[i], kshatryia)) {
       repeat_medium += 1;
     }
     if (repeat_big > 1 || repeat_medium > 1) {
@@ -221,7 +214,7 @@ function calculate_cool_score(data, company_employee_count) {
   position = clean_position_array(data.position);
 
   // Get Rid of those Filthy Street Cleaners
-  untouchable.forEach(function(entry) {
+  dalits.forEach(function(entry) {
     // Looks For Overlap Between Untouchables and Title Keywords
     if (is_in_array(entry, position)) {
       data.cool -= 5;
@@ -229,7 +222,7 @@ function calculate_cool_score(data, company_employee_count) {
   });
 
   // Get Rid of the Commoners
-  sudra.forEach(function(entry) {
+  sudras.forEach(function(entry) {
     // Looks For Overlap Between Sudra and Title Keywords
     if (is_in_array(entry, position)) {
       data.cool -= 2;
@@ -237,7 +230,7 @@ function calculate_cool_score(data, company_employee_count) {
   });
 
   // Boost Some Keywords
-  kshatriyas.forEach(function(entry) {
+  vaishya.forEach(function(entry) {
     // Looks For Overlap Between Sudra and Title Keywords
     if (is_in_array(entry, position)) {
       data.cool += 2;
@@ -282,6 +275,8 @@ async function find_best_lead(companies_test) {
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
+  // companies_test will always have of length of one, but this can be used in
+  // the future to accomidate running multiple companies
   for (i = 0; i < companies_test.length; i++) {
     const page = await browser.newPage();
     await page.setCookie(cookie);
@@ -382,7 +377,7 @@ async function find_best_lead(companies_test) {
         return highest_lead;
       } catch (err) {
         return {
-          "email": 'lists broke'
+          "email": 'function best_lead broke'
         }
       }
     }
@@ -417,7 +412,6 @@ async function find_best_lead(companies_test) {
 
     await page.close();
   }
-  // console.log(results);
   await browser.close();
 };
 
