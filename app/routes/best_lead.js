@@ -165,7 +165,7 @@ const is_in_array = function(s, your_array) {
   return false;
 };
 
-//Delay Shit
+//Delay
 const waitFor = function(timeToWait) {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -329,7 +329,7 @@ async function find_best_lead(companies_test) {
           console.log("Initial Data Could Not be Loaded.", err);
         }
       }, companies_test, i)
-      .catch(error => console.log("Shit Hits the fan in here", error));
+      .catch(error => console.log("Stuff breaks", error));
 
     const number_of_employees = await page.evaluate(() => {
       try {
