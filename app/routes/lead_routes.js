@@ -10,7 +10,7 @@ module.exports = function(app, db) {
       var info = await get_info.get_additional_comp_info(comp_id);
       var companies = await [
         {
-          "website": info['website'],
+          "website": info[0]['website'],
           "companyId": comp_id
         }
       ]
