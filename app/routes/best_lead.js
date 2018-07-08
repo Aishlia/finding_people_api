@@ -5,9 +5,10 @@ const fs = require('fs');
 const request = require('request');
 const rp = require('request-promise');
 /*
-Two systems of filtering. One Goes off Indian Caste System. Those who are lower
-are not desirable and will therefore be subtracted cool points. Those who are
-higher will be given cool points.
+Goes off Indian Caste System. Those who are lower are not desirable and will
+therefore be subtracted cool points. Those who are higher will be given cool
+points. There are special point numbers to account for larger and smaller
+company sizes.
 */
 
 // Untouchables: -5 cool points
@@ -165,7 +166,7 @@ const is_in_array = function(s, your_array) {
   return false;
 };
 
-//Delay
+// Delay
 const waitFor = function(timeToWait) {
   return new Promise(resolve => {
     setTimeout(() => {
