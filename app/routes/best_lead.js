@@ -408,7 +408,7 @@ async function find_best_lead(companies_test) {
       return company_leads;
     }
 
-    return best_lead_info(best_lead(leads))
+    return best_info(best_lead(leads))
 
     await page.close();
   }
